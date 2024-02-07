@@ -1,0 +1,8 @@
+GET /doc/index.html HTTP/1.1
+Host: localhost:8080
+Accept: text/html
+Accept-Language: en-US
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0
+
+test1=10&test2=15
