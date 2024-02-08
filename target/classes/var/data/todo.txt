@@ -1,0 +1,6 @@
+- Display Images
+- Make video server
+- Allow downloads
+- Try to do a proxy server and reverse proxy
+- Make a game inside browser (user interaction, send user data)
+- POST, PUT, DELETE requests (this is just filtering and putting correct headers)

@@ -27,8 +27,10 @@ public class Server {
   }
 
   private static void acceptClientRequest(Socket client) throws IOException, BadHTTPObjectException {
-    Worker worker = new Worker(client);
-    new Thread(worker).start();
+    if (client.isConnected() && !client.isClosed() && !client.isOutputShutdown() || !client.isOutputShutdown()) {
+      Worker worker = new Worker(client);
+      new Thread(worker).start();
+    }
   }
 
 }

@@ -90,15 +90,30 @@ public class DocumentHandler {
     if (url.endsWith("/")) {
       url = url.substring(0, url.length() - 1);
     }
-    File file;
-    file = new File(mainDirectory.getPath() + url);
-    if (file.isDirectory()) {
-      file = new File(mainDirectory.getPath() + url + "/index.html");
-    } else {
-      file = new File(mainDirectory.getPath() + url + ".html");
-    }
+
+    File file = handleFiles(url);
+
     return writeIntoResponse(file);
 
+  }
+
+  private static File handleFiles(String url) {
+    File file = new File(mainDirectory.getPath() + url);
+    String name = file.getName();
+
+    // other files request
+    if (!name.contains("html") && name.matches("[A-Za-z0-9]+\\.[A-Za-z0-9]+")) // TODO: Handle other file types
+    {
+      file = new File(mainDirectory.getPath() + url);
+    } else {
+      if (file.isDirectory()) {
+        file = new File(mainDirectory.getPath() + url + "/index.html");
+      } else {
+        file = new File(mainDirectory.getPath() + url + ".html");
+      }
+    }
+
+    return file;
   }
 
   /* Generate request body */
@@ -121,7 +136,10 @@ public class DocumentHandler {
   public static String createResponse(HTTPStatus status, String bodyUrl) {
     String body;
     try {
+      System.out.println(mainDirectory.getPath() + bodyUrl);
       body = makeBody(bodyUrl);
+      if (body == null)
+        body = "Could not find view (404)\r";
       HTTPResponse response = new HTTPResponse(status.getStatus(),
           HeadersFactory.barSeparatedResponseHeaderBuilder(
               makeDefaultHeaders(body)),
