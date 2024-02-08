@@ -31,12 +31,12 @@ public class Server {
 
   private static void acceptClientRequest(Socket client) throws IOException, BadHTTPObjectException {
 
-    byte[] buffer = new byte[32]; // Get input in buffers (in parts)
+    byte[] buffer = new byte[64]; // Get input in buffers (in parts)
     StringBuilder sb = new StringBuilder();
     DataInputStream dis = new DataInputStream(new BufferedInputStream(client.getInputStream()));
 
     while (dis.read(buffer) != -1 && dis.available() > 0) {
-      sb.append(new String(buffer, StandardCharsets.US_ASCII));
+      sb.append(new String(buffer, StandardCharsets.UTF_8));
     }
 
     if (EnvironmentConfig.DEBUG)

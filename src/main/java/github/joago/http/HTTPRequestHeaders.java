@@ -21,7 +21,7 @@ public enum HTTPRequestHeaders {
     this.header = header;
   }
 
-  String getValue() {
+  public String getHeader() {
     return this.header;
   }
 
