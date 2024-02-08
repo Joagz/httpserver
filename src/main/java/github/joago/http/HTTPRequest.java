@@ -7,6 +7,10 @@ import github.joago.exceptions.BadHTTPObjectException;
 
 public record HTTPRequest(String method, String url, HashMap<String, Object> headers, String body) {
 
+  /*
+   * Transform incoming buffer to an http request.
+   */
+
   public static HTTPRequest toHttpRequest(String request) throws BadHTTPObjectException {
     boolean inBody = false;
     String[] lines = request.split("\n");
@@ -39,13 +43,17 @@ public record HTTPRequest(String method, String url, HashMap<String, Object> hea
         continue;
       }
 
-      String string = lines[i].trim();
-      String header = string.substring(0, string.indexOf(":"));
-      String value = string.substring(string.indexOf(":") + 1, string.length());
-      if (value.startsWith(" ")) {
-        value = value.substring(1);
+      try {
+        String string = lines[i].trim();
+        String header = string.substring(0, string.indexOf(":"));
+        String value = string.substring(string.indexOf(":") + 1, string.length());
+        if (value.startsWith(" ")) {
+          value = value.substring(1);
+        }
+        headers.put(header, value);
+      } catch (java.lang.StringIndexOutOfBoundsException e) {
+        continue;
       }
-      headers.put(header, value);
 
     }
 
@@ -53,6 +61,7 @@ public record HTTPRequest(String method, String url, HashMap<String, Object> hea
       throw new BadHTTPObjectException("HTTP Request is malformed!");
 
     HTTPRequest httpRequest = new HTTPRequest(method, url, headers, body.toString());
+
     if (EnvironmentConfig.DEBUG)
       System.out.println(httpRequest);
 

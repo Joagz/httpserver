@@ -3,8 +3,12 @@ package github.joago.http;
 import java.util.HashMap;
 
 public record HTTPResponse(String statusCode, HashMap<String, String> headers, String body) {
-  public String toHttpResponse() {
 
+  /*
+   * After creating an http response object, transform it into a valid http response string.
+   */
+
+  public String toHttpResponse() {
     StringBuilder sb = new StringBuilder();
     sb.append("HTTP/1.1 " + statusCode + System.lineSeparator());
     headers.forEach((k, v) -> {

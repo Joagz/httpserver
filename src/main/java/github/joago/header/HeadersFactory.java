@@ -4,8 +4,16 @@ import java.util.HashMap;
 
 public class HeadersFactory {
 
-  public static HashMap<String, String> barSeparatedResponseHeaderBuilder(String list) {
+  /*
+   * transform a bar separated string into a hashmap with headers: key,
+   * header-values: values
+   *
+   * i.e: Transforms the following string to a hashmap
+   *
+   * "Content-Length:200//Content-Type:application/json//Server:MyServer/1.0"
+   */
 
+  public static HashMap<String, String> barSeparatedResponseHeaderBuilder(String list) {
     String[] parts = list.split("//");
     HashMap<String, String> headers = new HashMap<>();
     for (String string : parts) {

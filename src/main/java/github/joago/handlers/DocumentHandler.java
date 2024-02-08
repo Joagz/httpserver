@@ -60,7 +60,8 @@ public class DocumentHandler {
           + (body.getBytes("UTF-8").length - 1)
           + "//Content-Type:text/html; charset=UTF-8//Connection:close";
     } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
+      if (EnvironmentConfig.DEBUG)
+        e.printStackTrace();
     }
     return "";
   }
@@ -81,8 +82,6 @@ public class DocumentHandler {
       return createResponse(HTTPStatus.OK, url);
     } catch (NullPointerException e) {
       return createResponse(HTTPStatus.NOT_FOUND, EnvironmentConfig.NOT_FOUND_URL);
-    } catch (IOException e) {
-      return createResponse(HTTPStatus.INTERNAL_ERROR, EnvironmentConfig.INTERNAL_SERVER_ERROR_URL);
     }
   }
 
@@ -113,18 +112,26 @@ public class DocumentHandler {
 
       return sb.toString();
     } catch (IOException e) {
-      e.printStackTrace();
+      if (EnvironmentConfig.DEBUG)
+        e.printStackTrace();
     }
     return null;
   }
 
-  private static String createResponse(HTTPStatus status, String bodyUrl) throws NullPointerException, IOException {
-    String body = makeBody(bodyUrl);
-    HTTPResponse response = new HTTPResponse(status.getStatus(),
-        HeadersFactory.barSeparatedResponseHeaderBuilder(
-            makeDefaultHeaders(body)),
-        body);
-    return response.toHttpResponse();
+  public static String createResponse(HTTPStatus status, String bodyUrl) {
+    String body;
+    try {
+      body = makeBody(bodyUrl);
+      HTTPResponse response = new HTTPResponse(status.getStatus(),
+          HeadersFactory.barSeparatedResponseHeaderBuilder(
+              makeDefaultHeaders(body)),
+          body);
+      return response.toHttpResponse();
+
+    } catch (NullPointerException | IOException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
 }

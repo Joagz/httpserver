@@ -6,6 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
+// This class will be no longer used since we map the filesystem
+
+@Deprecated
 public class Mapping {
 
   private HashMap<String, String> mappings;
