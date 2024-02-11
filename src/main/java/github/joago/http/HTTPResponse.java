@@ -2,7 +2,7 @@ package github.joago.http;
 
 import java.util.HashMap;
 
-public record HTTPResponse(String statusCode, HashMap<String, String> headers, String body) {
+public record HTTPResponse(String statusCode, HashMap<String, String> headers, Object body) {
 
   /*
    * After creating an http response object, transform it into a valid http response string.

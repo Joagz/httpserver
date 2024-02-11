@@ -53,7 +53,6 @@ public class ClientTest {
       sb.append(new String(buffer));
     }
 
-    System.out.println(sb);
     client.close();
 
   }
